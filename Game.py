@@ -9,13 +9,15 @@ class Game:
 
     def game_loop(self):
         while True:
-            self._play_turn(self.player1)
-            self._play_turn(self.player2)
-
-    @staticmethod
-    def _play_turn(p: Player):
-        print(f"Player '{p.name}'s turn!'")
-        x, y = input("Where do you wanna hit? 'x,y' format: ").split(",")
+            print(f"{self.player1.name}, where do you want to shoot? 'x,y'")
+            x, y = input("x,y: ").split(",")
+            shot = self.player2.try_shot(int(x), int(y))
+            if shot:
+                print("You hit!")
+            else:
+                print("No hit")
+            self.player2.print_player_board(True)
+            print("^ - Your hits")
 
     def setup_game(self):
         self.player1.set_boats()
@@ -28,3 +30,4 @@ if __name__ == '__main__':
 
     game = Game(player1, player2)
     game.setup_game()
+    game.game_loop()

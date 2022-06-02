@@ -43,7 +43,7 @@ class Board:
         for ship in self.get_ships():
             if only_hits:
                 for hit in ship.get_hits():
-                    board[BOARD_MAX - 1 - hit[0]][hit[1]] = "X"
+                    board[BOARD_MAX - 1 - hit[1]][hit[0]] = "X"
             else:
                 for offset in range(ship.length):
                     x = ship.x if not ship.horizontal else ship.x + offset

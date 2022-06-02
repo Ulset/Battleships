@@ -8,4 +8,5 @@ class AI(Player):
 
     def set_boats(self):
         self._board.place_ship(0, 0, 5, True)
-        self._board.place_ship(0, 0, 5, True)
+        self._board.place_ship(0, 1, 5, True)
+

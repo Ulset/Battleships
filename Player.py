@@ -1,4 +1,4 @@
-from Board import Board, BOARD_MAX
+from Board import Board
 
 
 class Player:
@@ -18,8 +18,8 @@ class Player:
             self._board.place_ship(int(x), int(y), size, is_horizontal)
             self._board.print_board()
 
-    def print_player_board(self):
-        self._board.print_board()
+    def print_player_board(self, only_hits=False):
+        self._board.print_board(only_hits)
 
-    def got_shot(self, x, y):
+    def try_shot(self, x, y):
         return self._board.shoot_cord(x, y)
