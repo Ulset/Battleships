@@ -38,17 +38,17 @@ class Board:
                 return True
         return False
 
-    def print_board(self, only_hits=False):
+    def print_board(self, show_hits=False, show_ships=False):
         board = [[" " for _ in range(BOARD_MAX)] for _ in range(BOARD_MAX)]
         for ship in self.get_ships():
-            if only_hits:
-                for hit in ship.get_hits():
-                    board[BOARD_MAX - 1 - hit[1]][hit[0]] = "X"
-            else:
+            if show_ships:
                 for offset in range(ship.length):
                     x = ship.x if not ship.horizontal else ship.x + offset
                     y = ship.y if ship.horizontal else ship.y + offset
                     board[BOARD_MAX - 1 - y][x] = "O"
+            if show_hits:
+                for hit in ship.get_hits():
+                    board[BOARD_MAX - 1 - hit[1]][hit[0]] = "X"
 
         for line in board:
             for cell in line:
@@ -61,6 +61,9 @@ class Board:
             ship_hit.add_hit(x, y)
             return True
         return False
+
+    def all_ships_sunk(self):
+        return all([len(s.get_hits()) == s.length for s in self._ships])
 
 
 class Ship:
