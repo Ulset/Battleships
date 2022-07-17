@@ -24,6 +24,11 @@ class Player:
     def try_shot(self, x, y):
         return self._board.shoot_cord(x, y)
 
+    def get_shot(self):
+        print(f"{self.name}, where do you want to shoot?")
+        shot = input("x,y: ").split(",")
+        return shot
+
     def has_lost(self):
         return self._board.all_ships_sunk()
 

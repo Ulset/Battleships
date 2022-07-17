@@ -3,48 +3,43 @@ from Player import Player
 
 
 class Game:
-    def __init__(self, player: Player, ai: AI):
-        self.player = player
-        self.ai = ai
+    def __init__(self, player1: Player, player2: Player):
+        self.player: Player = player1
+        self.player2: Player = player2
 
-    def game_loop(self):
+        self._setup_game()
+
+    def _game_loop(self):
         while True:
-            print(f"{self.player.name}, where do you want to shoot? 'x,y'")
-            x, y = input("x,y: ").split(",")
-            shot = self.ai.try_shot(int(x), int(y))
-            if shot:
-                print("You hit!")
-            else:
-                print("No hit")
-            self.ai.print_player_board(show_hits=True)
-            print("^ - Opponents board")
-            if self.ai.has_lost():
-                print("YOU WON!")
+            if self._play_round(self.player, self.player2):
+                print(f"Player {self.player.name} won!")
+                break
+            elif self._play_round(self.player2, self.player):
+                print(f"Player {self.player.name} won!")
                 break
 
-            print(f"{self.ai.name}'s Turn!")
-            ai_x, ai_y = self.ai.generate_shot()
-            ai_shot = player1.try_shot(ai_x, ai_y)
-            print(f"{self.ai.name} is aiming for ({ai_x}, {ai_y})")
-            if ai_shot:
-                print("It hit!")
-            else:
-                print("It missed.")
-            player1.print_player_board(show_ships=True, show_hits=True)
-            print("^ - Your board now")
-            if self.player.has_lost():
-                print("You lost :(")
-                break
+    @staticmethod
+    def _play_round(player: Player, opponent: Player):
+        print(f"Its {player.name}'s turn!")
+        shot_x, shot_y = player.get_shot()
+        shot_hit = opponent.try_shot(int(shot_x), int(shot_y))
+        print("Hit!" if shot_hit else "Miss!")
+        opponent.print_player_board(show_hits=True)
+        print(f"^^ {player.name}'s hits on {opponent.name}")
+        print("\n\n")
+        return opponent.has_lost()
 
-    def setup_game(self):
+    def _setup_game(self):
         self.player.set_boats()
-        self.ai.set_boats()
+        self.player2.set_boats()
+
+    def start_game(self):
+        self._game_loop()
 
 
 if __name__ == '__main__':
-    player1 = Player("Sander")
-    player2 = AI()
+    p1 = Player("Sander")
+    p2 = AI()
 
-    game = Game(player1, player2)
-    game.setup_game()
-    game.game_loop()
+    game = Game(p1, p2)
+    game.start_game()
